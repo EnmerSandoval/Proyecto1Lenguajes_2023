@@ -6,13 +6,18 @@ package model;
 
 //import model.Gramatica;
 
+import controller.Gramatica;
+import controller.TipoToken;
+
+
 /**
  *
  * @author Usuario
  */
 public class Token {
-   // private Gramatica token;
-    //private Gramatica gramatica;
+   
+    private TipoToken tipoToken;
+    private Gramatica gramatica;
     private String lexema;
     private int fila;
     private int columna;
@@ -20,20 +25,20 @@ public class Token {
     public Token() {
     }
     
-  /*  public Token(Gramatica token ,Gramatica gramatica, String lexema, int fila, int columna) {
-        this.token = token;
+    public Token(TipoToken tipoToken ,Gramatica gramatica, String lexema, int fila, int columna) {
+        this.tipoToken = tipoToken;
         this.gramatica = gramatica;
         this.lexema = lexema;
         this.fila = fila;
         this.columna = columna;
     }
 
-    public Gramatica getToken() {
-        return token;
+    public TipoToken getTipoToken() {
+        return tipoToken;
     }
 
-    public void setToken(Gramatica token) {
-        this.token = token;
+    public void setTipoToken(TipoToken tipoToken) {
+        this.tipoToken = tipoToken;
     }
     
     public String getLexema() {
@@ -70,8 +75,9 @@ public class Token {
 
     @Override
     public String toString() {
-        return "Token{" + "gramatica=" + gramatica + ", lexema=" + lexema + ", fila=" + fila + ", columna=" + columna + '}';
+        return "Token{" + "tipo=" + tipoToken + "gramatica=" + gramatica + ", lexema=" + lexema + ", fila=" + fila + ", columna=" + columna + '}';
+                
     }
     
-    */
+    
 }
