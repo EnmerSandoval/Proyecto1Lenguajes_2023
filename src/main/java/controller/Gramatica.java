@@ -11,12 +11,21 @@ package controller;
 public enum Gramatica {
    
     //Simbolos Aritmeticos
-    SUMA,
-    RESTA,
-    EXPONENTE,
-    DIVISION,
-    MODULO,
-    MULTIPLICACION,
+    SUMASIGNO,
+    RESTASIGNO,
+    EXPONENTESIGNO,
+    DIVISIONSIGNO,
+    MODULOSIGNO,
+    MULTIPLICACIONSIGNO,
+    COMENTARIO,
+    IDENTIFICADOR,
+    
+    //Asignacion
+    ASIGNACION_ADICION,
+    ASIGNACION_SUSTRACCION,
+    ASIGNACION_MULTIPLICACION,
+    ASIGNACION_DIVISION,
+    ASIGNACION_RESIDUO,
     
     //Comparacion
     IGUAL,
@@ -27,6 +36,7 @@ public enum Gramatica {
     MAYOR_O_IGUAL_QUE,
     MENOR_O_IGUAL_QUE,
     ADMIRACION,
+    ASIGNACION,
     
     //SIMBOLOS
     PARENTESISAPERTURA,
@@ -39,10 +49,26 @@ public enum Gramatica {
     PUNTO,
     PUNTO_Y_COMA,
     DOS_PUNTOS,
-    COMILLAS,
+    COMILLASSIMPLES,
     COMILLASDOBLES,
     BARRAINVERSA,
+    ADMIRACIONABIERTO,
+    ADMIRACIONCERRADO,
+    INTERROGACIONAPERTURA,
+    INTERROGACIONCIERRE,
     
+    
+      //Numeros
+    CERO,
+    UNO,
+    DOS,
+    TRES,
+    CUATRO,
+    CINCO,
+    SEIS,
+    SIETE,
+    OCHO,
+    NUEVE,
     //Logicos 
     Y,
     O,
@@ -88,6 +114,7 @@ public enum Gramatica {
     WHILE,
     WITH,
     YIELD,
+    PRINT,
     
     
 }

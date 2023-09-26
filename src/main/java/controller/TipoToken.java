@@ -24,5 +24,6 @@ public enum TipoToken {
     DECIMAL,
     CADENA,
     BOOLEANO,
+    OTRO,
     
 }
