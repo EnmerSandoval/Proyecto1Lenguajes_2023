@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class Metodos {
 
-    private List<Token> tokens;
+    private List<Token> tokens = new ArrayList<>();
     private int index;
     private Map<String, Object> variables = new HashMap<>();
     private Map<String, Object> funciones = new HashMap<>();
@@ -21,6 +21,11 @@ public class Metodos {
     public Metodos(List<Token> tokens, int index) {
         this.tokens = tokens;
         this.index = index;
+        if (analizar()) {
+        System.out.println("Se completo la sentencia");            
+        } else {
+            System.out.println("no funciona");
+        }
     }
 
     public boolean analizar() {
@@ -33,6 +38,8 @@ public class Metodos {
     }
 
     private void sentencia() {
+        System.out.println("Entre en sentencia");
+        System.out.println("El token es de tipo: " + tokens.get(index).getTipoToken());
         if (tokens.get(index).getTipoToken().equals("PALABRA_RESERVADA")) {
             if (tokens.get(index).getLexema().equals("if")) {
                 sentencia_if();
@@ -41,19 +48,23 @@ public class Metodos {
             } else if (tokens.get(index).getLexema().equals("while")) {
                 sentencia_while();
             } else if (tokens.get(index).getLexema().equals("def")) {
-                sentencia_funcion();
+               // sentencia_funcion();
             }
-        } else if (tokens.get(index).match("IDENTIFICADOR.*")) {
-            if (index + 1 < tokens.size() && tokens.get(index + 1).equals("ASIGNACION")) {
+        } else if (tokens.get(index).getTipoToken().toString().equals("IDENTIFICADOR")) {
+            System.out.println("Entro al identificador");
+            if (index + 1 < tokens.size() && tokens.get(index + 1).getTipoToken().toString().equals("ASIGNACION")) {
+                System.out.println("Andamos en asignacion");
                 asignacion();
             } else {
+                System.out.println("Andamos en declaracion");
                 declaracionVariable();
             }
         } else {
             throw new RuntimeException("Error de sintaxis: token inesperado");
         }
     }
-
+    
+    
     private void declaracionVariable() {
         Object valor;
         String nombreVariable = tokens.get(index).getLexema();
@@ -119,28 +130,26 @@ public class Metodos {
         }
     }
 
-    private Object expresion() {
-        if (tokens.get(index).equals("BOOLEANO")) {
-            return Boolean.parseBoolean(tokens.get(index).getLexema());
-        } else if (tokens.get(index).equals("CADENA")) {
-            return tokens.get(index).getLexema();
-        } else if (tokens.get(index).equals("ENTERO")) {
-            return Integer.parseInt(tokens.get(index).getLexema());
+    private boolean expresion() {
+        if (tokens.get(index).getTipoToken().toString().equals("BOOLEANO")) {
+            return true;
+        } else if (tokens.get(index).getTipoToken().toString().equals("CADENA")) {
+            return true;
+        } else if (tokens.get(index).getTipoToken().toString().equals("CONSTANTE")) {
+            return true;
+        } else if (tokens.get(index).getTipoToken().toString().equals("DECIMAL")) {
+            return true;
         } else {
-            throw new RuntimeException("Error de sintaxis: expresión no válida");
+            return false;
         }
     }
 
     private void consumirToken(String expectedToken) {
-        if (index < tokens.size() && tokens.get(index).equals(expectedToken)) {
+        if (index < tokens.size() && tokens.get(index).getTipoToken().toString().equals(expectedToken)) {
             index++;
         } else {
             throw new RuntimeException("Error de sintaxis: se esperaba '" + expectedToken + "'");
         }
-    }
-
-    private void signosAritmeticos(String token) {
-
     }
 
     private void tokenPalabraReservada(String token) {
@@ -153,14 +162,94 @@ public class Metodos {
 
     private void sentencia_if() {
         tokenPalabraReservada("if");
-        expresion();
+        expresionCondicional();
         consumirToken("DOSPUNTOS");
         bloqueActual = "if";
-        bloque();
+       // bloque();
         sentencia_elif();
         sentencia_else();
         bloqueActual = "";
     }
+
+    private boolean expresionCondicional() {
+        if (tokens.get(index).equals("BOOLEANO")) {
+            return Boolean.parseBoolean(tokens.get(index).getLexema());
+        } else if (tokens.get(index).getTipoToken().equals("IDENTIFICADOR")) {
+            String identificador = tokens.get(index).getLexema();
+            return evaluarComoBooleano(identificador);
+        }// else if (esOperadorRelacional(tokens.get(index).getLexema())) {
+        //}
+        else if (tokens.get(index).getLexema().equals("not")) {
+            // Para manejar el operador "not"
+            consumirToken("not");
+            boolean expresionNegada = expresionCondicional();
+            return !expresionNegada;
+        } else if (tokens.get(index).getLexema().equals("(")) {
+            consumirToken("(");
+            boolean resultado = expresionCondicional();
+            consumirToken(")");
+            return resultado;
+        } else {
+            throw new RuntimeException("Error de sintaxis: expresión condicional no válida en el condicional if");
+        }
+    }
+
+    //"==" | "!=" | "<" | ">" | ">=" | "<="
+    private boolean esOperadorRelacional(String operador) {
+        return operador.equals("==") || operador.equals("<") || operador.equals(">")
+                || operador.equals("<=") || operador.equals(">=") || operador.equals("!=");
+    }
+
+    private boolean evaluarComoBooleano(String identificador) {
+        if (variables.containsKey(identificador)) {
+            Object valor = variables.get(identificador);
+            if (valor instanceof Boolean) {
+                return (boolean) valor;
+            } else {
+                throw new RuntimeException("Error de tipo: la variable '" + identificador + "' no es booleana");
+            }
+        } else {
+            throw new RuntimeException("Error: la variable '" + identificador + "' no está definida");
+        }
+    }
+
+   /* private boolean evaluarComparacion() {
+        boolean valor1, valor2;
+
+        if (tokens.get(index).getLexema().equals("not")) {
+            consumirToken("not");
+            boolean expresionNegada = expresionCondicional();
+            return !expresionNegada;
+        }
+
+        valor1 = expresionCondicional();
+
+        String operador = tokens.get(index).getLexema();
+        if (esOperadorRelacional(operador)) {
+            consumirToken(operador);
+        } else {
+            throw new RuntimeException("Operador de comparación no válido: " + operador);
+        }
+
+        valor2 = expresionCondicional();
+
+        switch (operador) {
+            case "==":
+                return valor1 == valor2;
+            case "<":
+                return valor1 < valor2;
+            case ">":
+                return valor1 > valor2;
+            case "<=":
+                return valor1 <= valor2;
+            case ">=":
+                return valor1 >= valor2;
+            case "!=":
+                return valor1 != valor2;
+            default:
+                throw new RuntimeException("Operador de comparación no válido: " + operador);
+        }
+    }*/
 
     private void sentencia_elif() {
         while (tokens.get(index).getLexema().equals("elif")) {
@@ -204,9 +293,9 @@ public class Metodos {
         sentencia_else();
     }
 
-    private void sentencia_funcion() {
+   /* private void sentencia_funcion() {
         consumirToken("DEF");
-        String nombreFuncion = tokens.get(index);
+ //       String nombreFuncion = tokens.get(index);
         consumirToken("IDENTIFICADOR");
         consumirToken("(");
         List<String> parametros = lista_parametros();
@@ -217,9 +306,9 @@ public class Metodos {
         //FunctionDefinition funcion = new FunctionDefinition(nombreFuncion, parametros, bloqueActual);
         // funciones.put(nombreFuncion, funcion);
         bloqueActual = "";
-    }
+    }*/
 
-    private List<String> lista_parametros() {
+   /* private List<String> lista_parametros() {
         List<String> parametros = new ArrayList<>();
         if (tokens.get(index).equals("IDENTIFICADOR")) {
             parametros.add(tokens.get(index));
@@ -231,7 +320,7 @@ public class Metodos {
             }
         }
         return parametros;
-    }
+    }*/
 
     private void bloque() {
         sentencia();
@@ -242,19 +331,24 @@ public class Metodos {
         }
     }
 
-    private void asignacion() {
+    private boolean asignacion() {
         String identificador = tokens.get(index).getTipoToken().toString();
         consumirToken("IDENTIFICADOR");
-        if (tokens.get(index).equals("ASIGNACION")) {
+        if (tokens.get(index).getTipoToken().toString().equals("ASIGNACION")) {
             consumirToken("ASIGNACION");
-            expresion();
-            variables.put(identificador, 0); // Solo para demostración, puedes asignar un valor real aquí
+            if (expresion()) {
+                index++;
+                return true;
+            } else {
+                System.out.println("Error de sintaxis: asignacion no valida");
+                return false;
+            }
         } else {
             throw new RuntimeException("Error de sintaxis: asignación no válida");
         }
     }
 
-    private void comparacion() {
+  /*  private void comparacion() {
         Object resultado = null;
         if (tokens.get(index).getTipoToken().equals("IDENTIFICADOR")) {
             consumirToken("IDENTIFICADOR");
@@ -274,7 +368,7 @@ public class Metodos {
         }
         return resultado;
     }
-
+*/
     private boolean vacio(String token) {
         return token.equals("");
     }

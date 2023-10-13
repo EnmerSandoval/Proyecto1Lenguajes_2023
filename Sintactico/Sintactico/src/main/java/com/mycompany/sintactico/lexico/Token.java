@@ -56,7 +56,7 @@ public class Token {
     public void setColumna(int columna) {
         this.columna = columna;
     }
-
+    
     public boolean match(String pattern) {
         return this.lexema.matches(pattern);
     }

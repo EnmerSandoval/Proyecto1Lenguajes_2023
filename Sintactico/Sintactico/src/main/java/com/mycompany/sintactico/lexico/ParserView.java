@@ -1,6 +1,7 @@
 
 package com.mycompany.sintactico.lexico;
 
+import com.mycompany.sintactico.Metodos;
 import com.mycompany.sintactico.lexico.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -331,7 +332,9 @@ public class ParserView extends javax.swing.JFrame {
             e.printStackTrace();
         } 
         
-        impresionTokens();
+        //impresionTokens();
+        
+        Metodos metodo = new Metodos(tokensLista, 0);
      
     }//GEN-LAST:event_buttonAnalizadorActionPerformed
     

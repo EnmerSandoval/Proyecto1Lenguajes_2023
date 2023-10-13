@@ -80,7 +80,7 @@ while |
 with |
 yield {lexema=yytext(); return new Token(TipoToken.PALABRA_RESERVADA, yyline+1, yycolumn+1, lexema);}
 
-//{espacio} {/*Ignore*/}
+{espacio} {/*Ignore*/}
 {E}+ {return new Token(TipoToken.NEWLINE, yyline+1, yycolumn+1, "");}
 
 {espacio}+ {
