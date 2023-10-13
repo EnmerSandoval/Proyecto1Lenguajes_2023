@@ -1,6 +1,5 @@
 package com.mycompany.sintactico;
 
-import com.mycompany.sintactico.lexico.TipoToken;
 import com.mycompany.sintactico.lexico.Token;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,11 +11,11 @@ import java.util.Map;
  * @author enmer
  */
 public class Metodos {
-/*
+
     private List<Token> tokens;
     private int index;
     private Map<String, Object> variables = new HashMap<>();
-    private Map<String,Object> funciones = new HashMap<>();
+    private Map<String, Object> funciones = new HashMap<>();
     private String bloqueActual = "";
 
     public Metodos(List<Token> tokens, int index) {
@@ -56,13 +55,19 @@ public class Metodos {
     }
 
     private void declaracionVariable() {
-        
+        Object valor;
         String nombreVariable = tokens.get(index).getLexema();
         consumirToken("IDENTIFICADOR");
 
         if (tokens.get(index).equals("ASIGNACION")) {
             consumirToken("ASIGNACION");
-            Object valor = expresion();
+
+            if (tokens.get(index).match(".*[+\\-*/%].*")) {
+                valor = expresionAritmetica();
+            } else {
+                valor = expresion();
+            }
+
             variables.put(nombreVariable, valor);
         } else {
             if (tokens.get(index).equals("COMA")) {
@@ -79,11 +84,21 @@ public class Metodos {
                 if (tokens.get(index).equals("ASIGNACION")) {
                     consumirToken("ASIGNACION");
                     List<Object> valores = new ArrayList<>();
-                    valores.add(expresion());
+
+                    if (tokens.get(index).match(".*[+\\-*/%].*")) {
+                        valores.add(expresionAritmetica());
+                    } else {
+                        valores.add(expresion());
+                    }
 
                     while (tokens.get(index).equals("COMA")) {
                         consumirToken("COMA");
-                        valores.add(expresion());
+
+                        if (tokens.get(index).match(".*[+\\-*/%].*")) {
+                            valores.add(expresionAritmetica());
+                        } else {
+                            valores.add(expresion());
+                        }
                     }
 
                     if (variablesDeclaradas.size() != valores.size()) {
@@ -99,10 +114,9 @@ public class Metodos {
                     }
                 }
             } else {
-                 variables.put(nombreVariable, null);
+                variables.put(nombreVariable, null);
             }
         }
-        consumirToken("PUNTOYCOMA");
     }
 
     private Object expresion() {
@@ -264,5 +278,53 @@ public class Metodos {
     private boolean vacio(String token) {
         return token.equals("");
     }
-*/
+
+    private Object expresionAritmetica() {
+        Object resultado = null;
+
+        if (tokens.get(index).equals("CONSTANTE")) {
+            resultado = parseConstant(tokens.get(index).getLexema());
+            consumirToken("CONSTANTE");
+        } else if (tokens.get(index).equals("ARITMETICO")) {
+            String operador = tokens.get(index).getLexema();
+            consumirToken("ARITMETICO");
+            Object operando = expresionAritmetica();
+
+            switch (operador) {
+                case "+":
+                    resultado = (double) resultado + (double) operando;
+                    break;
+                case "-":
+                    resultado = (double) resultado - (double) operando;
+                    break;
+                case "*":
+                    resultado = (double) resultado * (double) operando;
+                    break;
+                case "/":
+                    resultado = (double) resultado / (double) operando;
+                    break;
+                case "%":
+                    resultado = (double) resultado % (double) operando;
+                    break;
+                case "**":
+                    resultado = Math.pow((double) resultado, (double) operando);
+                    break;
+                case "//":
+                    resultado = (double) resultado / (double) operando;
+                    break;
+                default:
+                    throw new RuntimeException("Operador aritmético no válido");
+            }
+        }
+
+        return resultado;
+    }
+
+    private Object parseConstant(String value) {
+        if (value.contains(".")) {
+            return Double.parseDouble(value);
+        } else {
+            return Integer.parseInt(value);
+        }
+    }
 }

@@ -149,7 +149,7 @@ True | False {return new Token(TipoToken.BOOLEANO, yyline+1, yycolumn+1, yytext(
 "+=" | "-+" | "*+" | "@=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>=" | "**=" | "//=" {return new Token(TipoToken.ASIGNACION, yyline+1, yycolumn+1, yytext());}
 "+" | "-" | "*" | "/" | "%" | "**" | "//" {return new Token(TipoToken.ARITMETICO, yyline+1, yycolumn+1, yytext());}
 
-{NUM_DECIMAL} { return new Token(TipoToken.DECIMAL, yytext());}
+{NUM_DECIMAL} { return new Token(TipoToken.DECIMAL, yyline+1, yycolumn+1, yytext());}
 
 {L}({L}|{D})* {
     lexema = yytext();

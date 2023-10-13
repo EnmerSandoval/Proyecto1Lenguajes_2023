@@ -847,7 +847,7 @@ class Lexico {
             // fall through
           case 34: break;
           case 7: 
-            { return new Token(TipoToken.DECIMAL, yytext());
+            { return new Token(TipoToken.DECIMAL, yyline+1, yycolumn+1, yytext());
             } 
             // fall through
           case 35: break;
