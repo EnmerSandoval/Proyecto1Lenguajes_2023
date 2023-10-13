@@ -1,0 +1,12 @@
+# Esto es un bloque de código
+if condicion:
+    # Este es un bloque anidado
+    print("Dentro del bloque if")
+    print("Puede contener múltiples declaraciones")
+else:
+    # Este es el bloque "else"
+    print("Dentro del bloque else")
+    print("Otras declaraciones aquí")
+
+# Fuera del bloque de código
+print("Fuera del bloque if-else")

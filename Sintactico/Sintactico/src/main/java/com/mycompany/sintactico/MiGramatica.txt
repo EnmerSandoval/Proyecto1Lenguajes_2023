@@ -1,0 +1,62 @@
+sentencia      -> sentencia_if 
+| sentencia_for 
+| sentencia_while 
+| declaracion_var 
+| asignacion 
+| sentencia_funcion
+
+sentencia_if   -> IF expresion DOSPUNTOS bloque [sentencia_elif] [sentencia_else]
+
+sentencia_elif -> ELIF expresion DOSPUNTOS bloque [sentencia_elif]
+
+sentencia_else -> ELSE DOSPUNTOS bloque
+
+sentencia_for  -> FOR IDENTIFICADOR IN expresion DOSPUNTOS bloque [ELSE DOSPUNTOS bloque]
+
+sentencia_while -> WHILE expresion DOSPUNTOS bloque [ELSE DOSPUNTOS bloque]
+
+declaracion_var -> IDENTIFICADOR ASIGNACION expresion
+
+asignacion     -> IDENTIFICADOR operador_asignacion expresion
+
+asignacion_vars -> lista_identificadores operador_asignacion lista_expresiones
+
+lista_identificadores -> IDENTIFICADOR ["," lista_identificadores]
+
+lista_expresiones -> expresion ["," lista_expresiones]
+
+expresion      -> BOOLEANO 
+| comparacion 
+| lista 
+| diccionario 
+| llamada_funcion 
+| operador_terciario
+
+comparacion    -> expresion ARITMETICO expresion
+
+lista          -> IDENTIFICADOR operador_asignacion LISTA valores_lista
+
+valores_lista  -> "[" lista_elementos "]"
+
+lista_elementos -> expresion ["," lista_elementos]
+
+diccionario    -> IDENTIFICADOR operador_asignacion DICCIONARIO valores_diccionario
+
+valores_diccionario -> "{" lista_pares "}"
+
+lista_pares    -> clave ":" valor ["," lista_pares]
+
+clave          -> STRING
+
+valor          -> expresion 
+| STRING
+
+llamada_funcion -> IDENTIFICADOR "(" lista_argumentos ")"
+
+operador_tenario -> IDENTIFICADOR operador_ternario expresion DOSPUNTOS expresion
+
+sentencia_funcion -> DEF IDENTIFICADOR "(" lista_parametros ")" DOSPUNTOS bloque [RETURN expresion]
+
+lista_parametros -> IDENTIFICADOR ["," lista_parametros]
+
+lista_argumentos -> expresion ["," lista_argumentos]
