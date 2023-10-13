@@ -12,11 +12,11 @@ import java.util.Map;
  * @author enmer
  */
 public class Metodos {
-
+/*
     private List<Token> tokens;
     private int index;
     private Map<String, Object> variables = new HashMap<>();
-    private Map<String, FunctionDefinition> funciones = new HashMap<>();
+    private Map<String,Object> funciones = new HashMap<>();
     private String bloqueActual = "";
 
     public Metodos(List<Token> tokens, int index) {
@@ -264,5 +264,5 @@ public class Metodos {
     private boolean vacio(String token) {
         return token.equals("");
     }
-
+*/
 }

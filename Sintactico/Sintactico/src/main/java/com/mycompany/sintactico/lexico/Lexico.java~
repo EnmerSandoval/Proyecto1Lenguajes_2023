@@ -1002,6 +1002,7 @@ class Lexico {
         return new Token(TipoToken.INDENT, yyline + 1, yycolumn + 1, "");
     } else if (indentacion < currentIndentationLevel) {
         // Reducir el nivel de indentación
+        System.out.println("Aca esta la verificacion si es menor");
         while (indentationStack.peek() > indentacion) {
             indentationStack.pop();
             contador++;

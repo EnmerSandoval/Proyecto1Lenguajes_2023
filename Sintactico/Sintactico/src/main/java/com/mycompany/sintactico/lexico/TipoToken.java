@@ -17,7 +17,6 @@ public enum TipoToken {
     MEMBRESIAOPERADOR,
     IDENTIFICADORES,
     TERNARIO_ELSE,
-    ESPACIO,
     IDENTIFICADOR,
     ARITMETICO,
     COMPARACION,
@@ -25,13 +24,8 @@ public enum TipoToken {
     ASIGNACION,
     CONSTANTE,
     ERROR,
-    SIMBOLO,
-    NUMERO,
-    VARIABLE,
     PALABRA_RESERVADA,
     COMENTARIO,
-    NUMEROS,
-    ENTERO,
     DECIMAL,
     CADENA,
     BOOLEANO,
@@ -44,7 +38,5 @@ public enum TipoToken {
     COMA,
     PUNTOCOMA,
     DOSPUNTOS,
-    OTRO;
-    
-    
+    OTRO;    
 }

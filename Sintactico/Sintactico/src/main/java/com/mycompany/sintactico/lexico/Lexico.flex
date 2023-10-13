@@ -17,6 +17,8 @@ D=[0-9]+
 E=[\r\n]+
 S=[\t ]{4}+
 espacio = [ ]{4}+
+NUM_DECIMAL = (["0-9"])+ (("." | ",") (["0-9"])+)?
+
 
 %{
     public String lexema;    
@@ -146,6 +148,9 @@ True | False {return new Token(TipoToken.BOOLEANO, yyline+1, yycolumn+1, yytext(
 "==" | "!=" | "<" | ">" | ">=" | "<=" {return new Token(TipoToken.COMPARACION, yyline+1, yycolumn+1, yytext());}
 "+=" | "-+" | "*+" | "@=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>=" | "**=" | "//=" {return new Token(TipoToken.ASIGNACION, yyline+1, yycolumn+1, yytext());}
 "+" | "-" | "*" | "/" | "%" | "**" | "//" {return new Token(TipoToken.ARITMETICO, yyline+1, yycolumn+1, yytext());}
+
+{NUM_DECIMAL} { return new Token(TipoToken.DECIMAL, yytext());}
+
 {L}({L}|{D})* {
     lexema = yytext();
     return new Token(TipoToken.IDENTIFICADOR, yyline + 1, yycolumn + 1, lexema);
