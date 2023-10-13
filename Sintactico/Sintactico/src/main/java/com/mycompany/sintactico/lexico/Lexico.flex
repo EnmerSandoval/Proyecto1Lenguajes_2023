@@ -24,26 +24,20 @@ espacio = [ ]{4}+
     private int currentIndentationLevel = 0;
     private Stack<Integer> indentationStack = new Stack<>();
 
-    private int indentacionMetodo(String texto){
+    private int indentacionMetodo(String texto) {
         int variable = 0;
-        int indentaciones = 0;
-        for (char c : texto.toCharArray()){
-            if (c == ' '){
-                variable++;
-            } else if(c == '\t'){
+        for (char c : texto.toCharArray()) {
+            if (c == ' ' || c == '\t') {
                 variable++;
             } else {
                 break;
             }
         }
-        System.out.println("La variable es");
-        if(variable == 4){
-            variable = 0;
-            indentaciones++;    
-        }
-        System.out.println("Indentaciones" + indentaciones);
+        int indentaciones = variable / 4;  // Divide por 4 para calcular el nivel de indentación
         return indentaciones;
     }
+
+    
 %}
 
 %init{
@@ -88,7 +82,10 @@ yield {lexema=yytext(); return new Token(TipoToken.PALABRA_RESERVADA, yyline+1, 
 {E}+ {return new Token(TipoToken.NEWLINE, yyline+1, yycolumn+1, "");}
 
 {espacio}+ {
+
     int indentacion = indentacionMetodo(yytext());
+    System.out.println("valor de la identacion es: " + indentacion);
+    System.out.println("valor de currentIdentationLevel es: " + currentIndentationLevel); 
     contador++;
     if (indentacion > currentIndentationLevel) {
         // Incrementar el nivel de indentación
@@ -97,6 +94,7 @@ yield {lexema=yytext(); return new Token(TipoToken.PALABRA_RESERVADA, yyline+1, 
         return new Token(TipoToken.INDENT, yyline + 1, yycolumn + 1, "");
     } else if (indentacion < currentIndentationLevel) {
         // Reducir el nivel de indentación
+        System.out.println("Aca esta la verificacion si es menor");
         while (indentationStack.peek() > indentacion) {
             indentationStack.pop();
             contador++;

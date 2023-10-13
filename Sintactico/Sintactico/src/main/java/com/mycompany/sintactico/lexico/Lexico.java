@@ -110,9 +110,9 @@ class Lexico {
     "\20\17\1\22\1\23\1\6\1\0\1\15\1\0\1\24"+
     "\1\0\1\16\5\0\4\17\1\25\2\17\1\26\12\17"+
     "\1\26\1\17\1\26\12\17\4\0\1\27\14\17\1\0"+
-    "\3\17\1\25\7\17\1\2\1\0\1\30\6\17\2\0"+
-    "\2\17\1\0\2\17\1\0\1\27\3\17\1\31\2\17"+
-    "\1\0\2\17\1\32";
+    "\3\17\1\25\7\17\1\30\1\0\1\31\6\17\2\0"+
+    "\2\17\1\0\2\17\1\0\1\27\3\17\1\32\2\17"+
+    "\1\0\2\17\1\33";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[150];
@@ -431,26 +431,20 @@ class Lexico {
     private int currentIndentationLevel = 0;
     private Stack<Integer> indentationStack = new Stack<>();
 
-    private int indentacionMetodo(String texto){
+    private int indentacionMetodo(String texto) {
         int variable = 0;
-        int indentaciones = 0;
-        for (char c : texto.toCharArray()){
-            if (c == ' '){
-                variable++;
-            } else if(c == '\t'){
+        for (char c : texto.toCharArray()) {
+            if (c == ' ' || c == '\t') {
                 variable++;
             } else {
                 break;
             }
         }
-        System.out.println("La variable es");
-        if(variable == 4){
-            variable = 0;
-            indentaciones++;    
-        }
-        System.out.println("Indentaciones" + indentaciones);
+        int indentaciones = variable / 4;  // Divide por 4 para calcular el nivel de indentación
         return indentaciones;
     }
+
+    
 
 
   /**
@@ -869,7 +863,7 @@ class Lexico {
             { return new Token(TipoToken.ERROR, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 27: break;
+          case 28: break;
           case 2:
             { int indentacion = indentacionMetodo(yytext());
     contador++;
@@ -888,129 +882,151 @@ class Lexico {
     }
             }
           // fall through
-          case 28: break;
+          case 29: break;
           case 3:
             { return new Token(TipoToken.NEWLINE, yyline+1, yycolumn+1, "");
             }
           // fall through
-          case 29: break;
+          case 30: break;
           case 4:
             { lexema=yytext(); return new Token(TipoToken.COMENTARIO, yyline+1, yycolumn+1, lexema);
             }
           // fall through
-          case 30: break;
+          case 31: break;
           case 5:
             { return new Token(TipoToken.ARITMETICO, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 31: break;
+          case 32: break;
           case 6:
             { return new Token(TipoToken.BITOPERADOR, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 32: break;
+          case 33: break;
           case 7:
             { return new Token(TipoToken.PARENTESISAPERTURA, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 33: break;
+          case 34: break;
           case 8:
             { return new Token(TipoToken.PARENTESISCIERRE, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 34: break;
+          case 35: break;
           case 9:
             { return new Token(TipoToken.COMA, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 35: break;
+          case 36: break;
           case 10:
             { lexema = yytext();
     return new Token(TipoToken.CONSTANTE, yyline + 1, yycolumn + 1, lexema);
             }
           // fall through
-          case 36: break;
+          case 37: break;
           case 11:
             { return new Token(TipoToken.DOSPUNTOS, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 37: break;
+          case 38: break;
           case 12:
             { return new Token(TipoToken.PUNTOCOMA, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 38: break;
+          case 39: break;
           case 13:
             { return new Token(TipoToken.COMPARACION, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 39: break;
+          case 40: break;
           case 14:
             { return new Token(TipoToken.ASIGNACION, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 40: break;
+          case 41: break;
           case 15:
             { lexema = yytext();
     return new Token(TipoToken.IDENTIFICADOR, yyline + 1, yycolumn + 1, lexema);
             }
           // fall through
-          case 41: break;
+          case 42: break;
           case 16:
             { return new Token(TipoToken.CORCHETEAPERTURA, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 42: break;
+          case 43: break;
           case 17:
             { return new Token(TipoToken.CORCHETECIERRE, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 43: break;
+          case 44: break;
           case 18:
             { return new Token(TipoToken.LLAVEAPERTURA, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 44: break;
+          case 45: break;
           case 19:
             { return new Token(TipoToken.LLAVECIERRE, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 45: break;
+          case 46: break;
           case 20:
             { lexema=yytext(); return new Token(TipoToken.CADENA, yyline+1, yycolumn+1, lexema);
             }
           // fall through
-          case 46: break;
+          case 47: break;
           case 21:
             { lexema=yytext(); return new Token(TipoToken.LOGICO, yyline+1, yycolumn+1, yytext());
             }
           // fall through
-          case 47: break;
+          case 48: break;
           case 22:
             { lexema=yytext(); return new Token(TipoToken.PALABRA_RESERVADA, yyline+1, yycolumn+1, lexema);
             }
           // fall through
-          case 48: break;
+          case 49: break;
           case 23:
             { lexema=yytext(); return new Token(TipoToken.CONSTANTE, yyline+1, yycolumn+1, lexema);
             }
           // fall through
-          case 49: break;
-          case 24:
-            { return new Token(TipoToken.BOOLEANO, yyline+1, yycolumn+1, yytext());
-            }
-          // fall through
           case 50: break;
-          case 25:
-            { return new Token(TipoToken.IDENTIFICADORES, yyline+1, yycolumn+1, yytext());
+          case 24:
+            { int indentacion = indentacionMetodo(yytext());
+    System.out.println("valor de la identacion es: " + indentacion);
+    System.out.println("valor de currentIdentationLevel es: " + currentIndentationLevel); 
+    contador++;
+    if (indentacion > currentIndentationLevel) {
+        // Incrementar el nivel de indentación
+        currentIndentationLevel = indentacion;
+        indentationStack.push(indentacion);
+        return new Token(TipoToken.INDENT, yyline + 1, yycolumn + 1, "");
+    } else if (indentacion < currentIndentationLevel) {
+        // Reducir el nivel de indentación
+        System.out.println("Aca esta la verificacion si es menor");
+        while (indentationStack.peek() > indentacion) {
+            indentationStack.pop();
+            contador++;
+            return new Token(TipoToken.DEDENT, yyline + 1, yycolumn + 1, "");
+        }
+    }
             }
           // fall through
           case 51: break;
-          case 26:
-            { return new Token(TipoToken.MEMBRESIAOPERADOR, yyline+1, yycolumn+1, yytext());
+          case 25:
+            { return new Token(TipoToken.BOOLEANO, yyline+1, yycolumn+1, yytext());
             }
           // fall through
           case 52: break;
+          case 26:
+            { return new Token(TipoToken.IDENTIFICADORES, yyline+1, yycolumn+1, yytext());
+            }
+          // fall through
+          case 53: break;
+          case 27:
+            { return new Token(TipoToken.MEMBRESIAOPERADOR, yyline+1, yycolumn+1, yytext());
+            }
+          // fall through
+          case 54: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

@@ -12,10 +12,10 @@ import java.util.Map;
  * @author enmer
  */
 public class Metodos {
-    /*
+
     private List<Token> tokens;
     private int index;
-    private Map<String, Integer> variables = new HashMap<>();
+    private Map<String, Object> variables = new HashMap<>();
     private Map<String, FunctionDefinition> funciones = new HashMap<>();
     private String bloqueActual = "";
 
@@ -45,9 +45,75 @@ public class Metodos {
                 sentencia_funcion();
             }
         } else if (tokens.get(index).match("IDENTIFICADOR.*")) {
-            asignacion();
+            if (index + 1 < tokens.size() && tokens.get(index + 1).equals("ASIGNACION")) {
+                asignacion();
+            } else {
+                declaracionVariable();
+            }
         } else {
             throw new RuntimeException("Error de sintaxis: token inesperado");
+        }
+    }
+
+    private void declaracionVariable() {
+        
+        String nombreVariable = tokens.get(index).getLexema();
+        consumirToken("IDENTIFICADOR");
+
+        if (tokens.get(index).equals("ASIGNACION")) {
+            consumirToken("ASIGNACION");
+            Object valor = expresion();
+            variables.put(nombreVariable, valor);
+        } else {
+            if (tokens.get(index).equals("COMA")) {
+                List<String> variablesDeclaradas = new ArrayList<>();
+                variablesDeclaradas.add(nombreVariable);
+
+                while (tokens.get(index).equals("COMA")) {
+                    consumirToken("COMA");
+                    String otraVariable = tokens.get(index).getLexema();
+                    consumirToken("IDENTIFICADOR");
+                    variablesDeclaradas.add(otraVariable);
+                }
+
+                if (tokens.get(index).equals("ASIGNACION")) {
+                    consumirToken("ASIGNACION");
+                    List<Object> valores = new ArrayList<>();
+                    valores.add(expresion());
+
+                    while (tokens.get(index).equals("COMA")) {
+                        consumirToken("COMA");
+                        valores.add(expresion());
+                    }
+
+                    if (variablesDeclaradas.size() != valores.size()) {
+                        throw new RuntimeException("Error de sintaxis: número de variables y valores no coincide.");
+                    }
+
+                    for (int i = 0; i < variablesDeclaradas.size(); i++) {
+                        variables.put(variablesDeclaradas.get(i), valores.get(i));
+                    }
+                } else {
+                    for (String variable : variablesDeclaradas) {
+                        variables.put(variable, null);
+                    }
+                }
+            } else {
+                 variables.put(nombreVariable, null);
+            }
+        }
+        consumirToken("PUNTOYCOMA");
+    }
+
+    private Object expresion() {
+        if (tokens.get(index).equals("BOOLEANO")) {
+            return Boolean.parseBoolean(tokens.get(index).getLexema());
+        } else if (tokens.get(index).equals("CADENA")) {
+            return tokens.get(index).getLexema();
+        } else if (tokens.get(index).equals("ENTERO")) {
+            return Integer.parseInt(tokens.get(index).getLexema());
+        } else {
+            throw new RuntimeException("Error de sintaxis: expresión no válida");
         }
     }
 
@@ -174,27 +240,7 @@ public class Metodos {
         }
     }
 
-    private Object expresion() {
-        if (tokens.get(index).equals("BOOLEANO")) {
-            consumirToken("BOOLEANO");
-        } else {
-            Object left = comparacion();
-            if (tokens.get(index).getTipoToken().equals("ASIGNACION")) {
-                String operador = tokens.get(index++).getLexema();
-                Object right = expresion();
-                switch (operador) {
-                    case "=":
-
-                        break;
-                    default:
-                        throw new AssertionError();
-                }
-            }
-
-        }
-    }
-
-    private Object comparacion() {
+    private void comparacion() {
         Object resultado = null;
         if (tokens.get(index).getTipoToken().equals("IDENTIFICADOR")) {
             consumirToken("IDENTIFICADOR");
@@ -219,12 +265,4 @@ public class Metodos {
         return token.equals("");
     }
 
-    private void match(String expectedToken) {
-        if (tokens.get(index).equals(expectedToken)) {
-            consumirToken(expectedToken);
-        } else {
-            throw new RuntimeException("Error de sintaxis: se esperaba '" + expectedToken + "'");
-        }
-    }
-    */
 }

@@ -9,6 +9,7 @@ package com.mycompany.sintactico.lexico;
  * @author enmer
  */
 public class Token {
+
     private TipoToken tipoToken;
     private String lexema;
     private int fila;
@@ -22,7 +23,7 @@ public class Token {
         this.lexema = lexema;
         this.fila = fila;
         this.columna = columna;
-    }    
+    }
 
     public TipoToken getTipoToken() {
         return tipoToken;
@@ -54,6 +55,10 @@ public class Token {
 
     public void setColumna(int columna) {
         this.columna = columna;
-    } 
-    
+    }
+
+    public boolean match(String pattern) {
+        return this.lexema.matches(pattern);
+    }
+
 }
