@@ -1,0 +1,28 @@
+s --> aSb
+S --> X
+X --> bXc
+X --> Y
+Y --> cYd
+Y --> ε
+
+abcd
+aabbcc
+aaabbbcccddd
+
+	1----aSb
+	2----aXb
+	3----abXcb
+	4----abYcb
+	5----abεcb ----> abcb No pertenece 
+	
+	1----aSb
+	1----aaSb
+	2----aaXb
+	3----aabXcb
+	3----aabbXccb
+	4----aabbYccb
+	6----aabbεccb ---> aabbccb No pertenece 	
+
+        1----aSb
+	1----aaSbb
+	1----aaaSbbb  ----> No pertenece a la gramatica
