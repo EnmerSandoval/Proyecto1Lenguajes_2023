@@ -25,6 +25,7 @@ public class ErroresLexicos extends javax.swing.JFrame {
      * 
      * Creates new form ErroresLexicos
      */
+    
     public ErroresLexicos(ArrayList<Token> tokens, ArrayList<Token> listaGeneral, ArrayList<Token> tokensLista, String texto, ArrayList<Sintaxis> erroresSintacticos) {
         this.tokensErrores = tokens;
         this.listaGeneral = listaGeneral;
