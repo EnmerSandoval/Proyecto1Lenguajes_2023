@@ -301,4 +301,11 @@ public class Metodos {
                 return 0;
         }
     }
+
+    public ArrayList<Sintaxis> getErrorSintaxis() {
+        return errorSintaxis;
+    }
+
+  
+    
 }

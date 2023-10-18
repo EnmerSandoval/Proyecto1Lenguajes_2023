@@ -20,6 +20,11 @@ public class Sintaxis {
         this.columna = columna;
     }
 
+    public Sintaxis() {
+    }
+    
+    
+
     public String getMensaje() {
         return mensaje;
     }

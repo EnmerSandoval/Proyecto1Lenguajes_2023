@@ -4,20 +4,60 @@
  */
 package com.mycompany.sintactico.lexico;
 
+import java.util.ArrayList;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author enmer
  */
 public class ErroresSintacticos extends javax.swing.JFrame {
-    
+
+    private ArrayList<Token> tokens = new ArrayList<>();
+    private ArrayList<Token> listaGeneral = new ArrayList<>();
+    private ArrayList<Token> tokensLista = new ArrayList<>();
+    private ArrayList<Sintaxis> erroresSintacticos = new ArrayList<>();
+    private String texto = "";
+
     /**
      * Creates new form ErroresLexicos
      */
-    public ErroresSintacticos() {
+    public ErroresSintacticos(ArrayList<Token> tokens, ArrayList<Token> listaGeneral, ArrayList<Token> tokensLista, String texto, ArrayList<Sintaxis> erroresSintacticoss) {
+        this.tokens = tokens;
+        this.listaGeneral = listaGeneral;
+        this.tokensLista = tokensLista;
+        this.texto = texto;
+        this.erroresSintacticos = erroresSintacticoss;
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Reportes");
-        
+        llenadoTable(tabla, erroresSintacticos);
+
+    }
+
+    public void llenadoTable(JTable tabla, ArrayList<Sintaxis> token) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Token");
+        modelo.addColumn("Lexema");
+        modelo.addColumn("Linea");
+        modelo.addColumn("Columna");
+        Sintaxis tokenAuxiliar = new Sintaxis();
+        try {
+
+            for (int i = 0; i < token.size(); i++) {
+                Object[] fila = new Object[4];
+                tokenAuxiliar = token.get(i);
+                fila[0] = tokenAuxiliar.getMensaje();
+                fila[1] = tokenAuxiliar.getFila();
+                fila[2] = tokenAuxiliar.getColumna();
+                modelo.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tabla.setModel(modelo);
     }
 
     /**
@@ -32,34 +72,39 @@ public class ErroresSintacticos extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        reporte = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ERRORES LEXICOS");
+        jLabel1.setText("ERRORES SINTACTICOS");
 
-        reporte.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "TOKEN", "LEXEMA", "LINEA", "COLUMNA"
+                "TOKEN", "LINEA", "COLUMNA"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(reporte);
+        jScrollPane2.setViewportView(tabla);
 
         jButton1.setText("CONTINUAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -83,7 +128,7 @@ public class ErroresSintacticos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jLabel1)
-                .addGap(70, 70, 70)
+                .addGap(46, 46, 46)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
                 .addComponent(jButton1)
@@ -108,47 +153,22 @@ public class ErroresSintacticos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        ParserView parserView = new ParserView(tokens, listaGeneral, tokensLista, texto, erroresSintacticos);
+        parserView.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ErroresSintacticos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ErroresSintacticos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ErroresSintacticos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ErroresSintacticos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ErroresSintacticos().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable reporte;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

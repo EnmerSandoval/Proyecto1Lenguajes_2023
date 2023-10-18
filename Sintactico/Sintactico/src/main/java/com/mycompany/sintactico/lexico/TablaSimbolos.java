@@ -12,43 +12,42 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author enmer
  */
-public class ErroresLexicos extends javax.swing.JFrame {
-    
-    private ArrayList<Token> tokensErrores = new ArrayList<>();
+public class TablaSimbolos extends javax.swing.JFrame {
+
+    private ArrayList<Token> tokens = new ArrayList<>();
     private ArrayList<Token> listaGeneral = new ArrayList<>();
     private ArrayList<Token> tokensLista = new ArrayList<>();
-    private ArrayList<Sintaxis> errorSintactico = new ArrayList<>();
+    private ArrayList<Sintaxis> erroresSintacticos = new ArrayList<>();
     private String texto = "";
-    
-    
+
     /**
-     * 
      * Creates new form ErroresLexicos
      */
-    public ErroresLexicos(ArrayList<Token> tokens, ArrayList<Token> listaGeneral, ArrayList<Token> tokensLista, String texto, ArrayList<Sintaxis> erroresSintacticos) {
-        this.tokensErrores = tokens;
+    public TablaSimbolos(ArrayList<Token> tokens, ArrayList<Token> listaGeneral, ArrayList<Token> tokensLista, String texto, ArrayList<Sintaxis> erroresSintacticoss) {
+        this.tokens = tokens;
         this.listaGeneral = listaGeneral;
-        this.tokensLista = tokensErrores;
+        this.tokensLista = tokensLista;
         this.texto = texto;
-        this.errorSintactico = erroresSintacticos;
+        this.erroresSintacticos = erroresSintacticoss;
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Reportes");
-        llenadoTable(tabla, tokensErrores);
+        llenadoTable(tabla, listaGeneral);
+
     }
-    
-    private void llenadoTable(JTable tabla, ArrayList<Token> tokens) {
+
+    public void llenadoTable(JTable tabla, ArrayList<Token> token) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Token");
         modelo.addColumn("Lexema");
-        modelo.addColumn("Fila");
+        modelo.addColumn("Linea");
         modelo.addColumn("Columna");
         Token tokenAuxiliar = new Token();
         try {
 
-            for (int i = 0; i < tokens.size(); i++) {
+            for (int i = 0; i < token.size(); i++) {
                 Object[] fila = new Object[4];
-                tokenAuxiliar = tokens.get(i);
+                tokenAuxiliar = token.get(i);
                 fila[0] = tokenAuxiliar.getTipoToken();
                 fila[1] = tokenAuxiliar.getLexema();
                 fila[2] = tokenAuxiliar.getFila();
@@ -73,15 +72,22 @@ public class ErroresLexicos extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ERRORES LEXICOS");
+        jLabel1.setText("TABLA SIMBOLOS");
+
+        jButton1.setText("CONTINUAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -101,38 +107,31 @@ public class ErroresLexicos extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tabla);
 
-        jButton1.setText("CONTINUAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(68, Short.MAX_VALUE)
+                .addContainerGap(76, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1008, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(455, 455, 455))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(316, 316, 316))))
+                        .addGap(316, 316, 316))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1008, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jLabel1)
-                .addGap(70, 70, 70)
+                .addGap(55, 55, 55)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addGap(45, 45, 45)
                 .addComponent(jButton1)
                 .addContainerGap(144, Short.MAX_VALUE))
         );
@@ -157,12 +156,15 @@ public class ErroresLexicos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        ParserView parserView = new ParserView(tokensErrores, listaGeneral, tokensLista, texto , errorSintactico);
+        ParserView parserView = new ParserView(tokens, listaGeneral, tokensLista, texto, erroresSintacticos);
         parserView.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-   
+    /**
+     * @param args the command line arguments
+     */
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

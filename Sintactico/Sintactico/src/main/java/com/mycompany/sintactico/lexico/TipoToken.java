@@ -36,6 +36,7 @@ public enum TipoToken {
     CORCHETEAPERTURA,
     CORCHETECIERRE,
     COMA,
+    PUNTO,
     PUNTOCOMA,
     DOSPUNTOS,
     OTRO;    

@@ -24,6 +24,8 @@ public class Token {
         this.fila = fila;
         this.columna = columna;
     }
+    
+    
 
     public TipoToken getTipoToken() {
         return tipoToken;

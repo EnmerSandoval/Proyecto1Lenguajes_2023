@@ -78,6 +78,7 @@ True | False {return new Token(TipoToken.BOOLEANO, yyline+1, yycolumn+1, yytext(
 
 "[" {return new Token(TipoToken.CORCHETEAPERTURA, yyline+1, yycolumn+1, yytext());}
 "]" {return new Token(TipoToken.CORCHETECIERRE, yyline+1, yycolumn+1, yytext());}
+"." {return new Token(TipoToken.PUNTO, yyline+1, yycolumn+1, yytext());}
 "," {return new Token(TipoToken.COMA, yyline+1, yycolumn+1, yytext());}
 ":" {return new Token(TipoToken.DOSPUNTOS, yyline+1, yycolumn+1, yytext());}
 ";" {return new Token(TipoToken.PUNTOCOMA, yyline+1, yycolumn+1, yytext());}

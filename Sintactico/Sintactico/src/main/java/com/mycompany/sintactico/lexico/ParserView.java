@@ -27,6 +27,8 @@ public class ParserView extends javax.swing.JFrame {
     private static ArrayList<Token> tokensLista = new ArrayList<>();
     private static ArrayList<Token> lista = new ArrayList<>();
     private static ArrayList<Token> errores = new ArrayList<>();
+    private ArrayList<Sintaxis> errorSintactico = new ArrayList<>();
+    private static String texto = "";
 
     /**
      * Creates new form Parser
@@ -36,6 +38,22 @@ public class ParserView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Analizador");
         grafico.setEnabled(false);
+    }
+    
+    public ParserView(ArrayList<Token> tokens, ArrayList<Token> listaGeneral, ArrayList<Token> tokensLista, String texto, ArrayList<Sintaxis> erroresSintacticoss){
+        this.errores = tokens;
+        this.lista = listaGeneral;
+        this.tokensLista = tokensLista;
+        this.texto = texto;
+        this.errorSintactico = erroresSintacticoss;
+        initComponents();
+        setLocationRelativeTo(null);
+        setTitle("Analizador");
+        cargaTexto(texto);
+    }
+    
+    private void cargaTexto(String texto){
+        textArea.setText(texto);
     }
 
     /**
@@ -111,8 +129,18 @@ public class ParserView extends javax.swing.JFrame {
         });
 
         erroresLexicos.setText("ERRORES LEXICOS");
+        erroresLexicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                erroresLexicosActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("ERRORES SINTACTICOS");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("TABLA DE SIMBOLOS");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -179,7 +207,6 @@ public class ParserView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -297,22 +324,39 @@ public class ParserView extends javax.swing.JFrame {
             e.printStackTrace();
         } 
         
-        //impresionTokens();
+        impresionTokens();
         
         Metodos metodo = new Metodos(tokensLista);
-     
+        errorSintactico = metodo.getErrorSintaxis(); 
     }//GEN-LAST:event_buttonAnalizadorActionPerformed
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        TablaSimbolos tablaSimbolos = new TablaSimbolos(tokensLista, lista, tokensLista, texto, errorSintactico);
+        tablaSimbolos.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        ErroresSintacticos erroresSintacticos = new ErroresSintacticos(tokensLista, tokensLista, lista, textArea.getText(), errorSintactico);
+        erroresSintacticos.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void erroresLexicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_erroresLexicosActionPerformed
+        // TODO add your handling code here:
+        ErroresLexicos erroresLexicos = new ErroresLexicos(errores, tokensLista, lista, textArea.getText(), errorSintactico);
+        erroresLexicos.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_erroresLexicosActionPerformed
 
     public void impresionTokens(){
        
-        for (int i = 0; i < tokensLista.size(); i++) {
+       /* for (int i = 0; i < tokensLista.size(); i++) {
             System.out.println("Tokens");
             System.out.println(tokensLista.get(i).getTipoToken() + tokensLista.get(i).getLexema());
-        } 
+        } */ 
         
         for (int i = 0; i < errores.size(); i++) {
             System.out.println("Errores");
